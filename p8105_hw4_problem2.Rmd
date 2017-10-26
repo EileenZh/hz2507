@@ -9,6 +9,9 @@ library(tidyverse)
 library(haven)
 library(janitor)
 library(lubridate)
+library(ggridges)
+library(ggthemes)
+
 pols_data=read_csv("./fivethirtyeight_datasets/pols-month.csv")%>%
   clean_names()%>%
 mutate(mon=floor_date(mon,unit="month"))%>%
@@ -23,4 +26,20 @@ separate(date, into = c("year", "month", "day"), convert = TRUE)%>%
 mutate(month = month.name[month])
 data_538 =left_join(pols_data,Gdp_data,by=c("month","year"))%>%
 filter(!GDP_value==".")
+```
+
+GDP value over time, including the party of the president:
+
+```{r plot, fig.width=10,fig.height=11}
+data_538 %>%
+  mutate(GDP_value = as.numeric(GDP_value)) %>%
+  ggplot(aes(x = month, y = GDP_value, col = president)) + 
+  geom_point() +
+  geom_path(aes(group = year), size = 1, alpha = .2) +
+  scale_x_discrete(limits=c("January","April","July", "October")) +
+  labs(
+    title = "GDP value over time",
+    x = "Month",
+    y = "GDP value"
+    )
 ```
