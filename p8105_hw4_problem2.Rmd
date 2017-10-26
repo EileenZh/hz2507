@@ -23,14 +23,17 @@ mutate(mon=floor_date(mon,unit="month"))%>%
 separate(mon, into = c("year", "month", "day"), convert = TRUE)%>%
  mutate(month = month.name[month], president = recode(prez_gop, `0` = "dem", `1` = "gop", `2` = "gop")) %>%
 select(-day, -starts_with("prez"))
+
 Gdp_data=read_csv("./fivethirtyeight_datasets/GDP.csv")%>%
   clean_names()%>%
 mutate(date=floor_date(date,unit="month"))%>%
   rename(GDP_value=value)%>%
 separate(date, into = c("year", "month", "day"), convert = TRUE)%>%
 mutate(month = month.name[month])
+
 data_538 =left_join(pols_data,Gdp_data,by=c("month","year"))%>%
 filter(!GDP_value==".")
+data_538
 ```
 
 GDP value over time, including the party of the president:
