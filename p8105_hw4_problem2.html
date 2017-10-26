@@ -163,6 +163,7 @@ select(-day, -starts_with(&quot;prez&quot;))</code></pre>
 <pre class="r"><code>Gdp_data=read_csv(&quot;./fivethirtyeight_datasets/GDP.csv&quot;)%&gt;%
   clean_names()%&gt;%
 mutate(date=floor_date(date,unit=&quot;month&quot;))%&gt;%
+  rename(GDP_value=value)%&gt;%
 separate(date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), convert = TRUE)%&gt;%
 mutate(month = month.name[month])</code></pre>
 <pre><code>## Parsed with column specification:
@@ -170,23 +171,23 @@ mutate(month = month.name[month])</code></pre>
 ##   DATE = col_date(format = &quot;&quot;),
 ##   VALUE = col_character()
 ## )</code></pre>
-<pre class="r"><code>data_538 = left_join(pols_data,Gdp_data,by=&quot;month&quot;) 
+<pre class="r"><code>data_538 =left_join(pols_data,Gdp_data,by=c(&quot;month&quot;,&quot;year&quot;))%&gt;%
+filter(!GDP_value==&quot;.&quot;)
 data_538</code></pre>
-<pre><code>## # A tibble: 19,249 x 12
-##    year.x   month gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem
-##     &lt;int&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;
-##  1   1947 January      23      51     253      23      45     198
-##  2   1947 January      23      51     253      23      45     198
-##  3   1947 January      23      51     253      23      45     198
-##  4   1947 January      23      51     253      23      45     198
-##  5   1947 January      23      51     253      23      45     198
-##  6   1947 January      23      51     253      23      45     198
-##  7   1947 January      23      51     253      23      45     198
-##  8   1947 January      23      51     253      23      45     198
-##  9   1947 January      23      51     253      23      45     198
-## 10   1947 January      23      51     253      23      45     198
-## # ... with 19,239 more rows, and 4 more variables: president &lt;chr&gt;,
-## #   year.y &lt;int&gt;, day &lt;int&gt;, value &lt;chr&gt;</code></pre>
+<pre><code>## # A tibble: 269 x 11
+##     year   month gov_gop sen_gop rep_gop gov_dem sen_dem rep_dem president
+##    &lt;int&gt;   &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;     &lt;chr&gt;
+##  1  1948 January      22      53     253      24      48     198       dem
+##  2  1948   April      22      53     253      24      48     198       dem
+##  3  1948    July      22      53     253      24      48     198       dem
+##  4  1948 October      22      53     253      24      48     198       dem
+##  5  1949 January      18      45     177      29      58     269       dem
+##  6  1949   April      18      45     177      29      58     269       dem
+##  7  1949    July      18      45     177      30      58     269       dem
+##  8  1949 October      18      45     177      30      58     269       dem
+##  9  1950 January      18      44     177      29      57     269       dem
+## 10  1950   April      18      44     177      29      57     269       dem
+## # ... with 259 more rows, and 2 more variables: day &lt;int&gt;, GDP_value &lt;chr&gt;</code></pre>
 
 
 
