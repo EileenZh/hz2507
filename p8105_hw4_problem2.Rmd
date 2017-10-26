@@ -1,0 +1,24 @@
+---
+title: "h4_problem2"
+author: "Huilin Zhou"
+date: "October 25, 2017"
+output: html_document
+---
+```{r 538}
+library(tidyverse)
+library(haven)
+library(janitor)
+library(lubridate)
+pols_data=read_csv("/Users/Greenly/Documents/data science/homework/p8105_hw4_problem2/fivethirtyeight_datasets/pols-month.csv")%>%
+  clean_names()%>%
+mutate(mon=floor_date(mon,unit="month"))%>%
+separate(mon, into = c("year", "month", "day"), convert = TRUE)%>%
+ mutate(month = month.name[month], president = recode(prez_gop, `0` = "dem", `1` = "gop", `2` = "gop")) %>%
+select(-day, -starts_with("prez"))
+Gdp_data=read_csv("/Users/Greenly/Documents/data science/homework/p8105_hw4_problem2/fivethirtyeight_datasets/GDP.csv")%>%
+  clean_names()%>%
+mutate(date=floor_date(date,unit="month"))%>%
+separate(date, into = c("year", "month", "day"), convert = TRUE)%>%
+mutate(month = month.name[month])
+data_538 = left_join(pols_data,Gdp_data,by="month")  
+```
