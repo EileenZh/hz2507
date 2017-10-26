@@ -4,6 +4,11 @@ author: "Huilin Zhou"
 date: "October 25, 2017"
 output: html_document
 ---
+
+###Problem 2
+
+Tidy the dataset:
+
 ```{r 538}
 library(tidyverse)
 library(haven)
@@ -43,3 +48,5 @@ data_538 %>%
     y = "GDP value"
     )
 ```
+
+This plot shows the GDP value of January, April, July and October of each year. The party of the president is indicated by different color. From the plot we can see that the GDP fluctuated a lot for both democratic and republican presidents. The range of GDP was larger when democratic president was in power. 
